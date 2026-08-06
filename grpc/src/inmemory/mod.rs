@@ -115,12 +115,6 @@ impl crate::rt::address::ListenerAddress for InMemoryListenerAddress {
     }
 }
 
-impl std::fmt::Display for InMemoryListenerAddress {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "inmemory:{}", self.id)
-    }
-}
-
 #[derive(Clone)]
 pub struct InMemoryListener {
     inner: Arc<InMemoryListenerInner>,
@@ -563,10 +557,10 @@ mod tests {
         let listener = InMemoryListener::new();
         let addr = listener.local_addr();
         assert_eq!(addr.network(), "inmemory");
-        let display = addr.to_string();
+        let debug = format!("{addr:?}");
         assert!(
-            display.starts_with("inmemory:"),
-            "expected 'inmemory:' prefix, got: {display}"
+            debug.contains("id:"),
+            "expected debug to include id field, got: {debug}"
         );
     }
 
