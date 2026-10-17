@@ -50,3 +50,6 @@ uninlined_format_args = "deny"
 
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"
+
+[patch.crates-io]
+hyper = { git = "https://github.com/MercuryTechnologies/hyper.git", rev = "bccfc4eb2952d28d5243b1d6949d8c45ef8994e4" }
