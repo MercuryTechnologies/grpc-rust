@@ -1,7 +1,7 @@
 use bytes::{BufMut, Bytes, BytesMut};
 use h2::server;
 use http::HeaderMap;
-use integration_tests::pb::{Input, test_client::TestClient};
+use integration_tests::pb::{Input, goaway_test_client::GoawayTestClient};
 use std::time::Duration;
 use tokio::net::TcpListener;
 use tonic::transport::Endpoint;
@@ -101,7 +101,7 @@ async fn goaway_reconnects_sequential() {
         .connect()
         .await
         .unwrap();
-    let mut client = TestClient::new(channel);
+    let mut client = GoawayTestClient::new(channel);
 
     // Send 20 sequential requests. Server sends GOAWAY after every 5 per
     // connection, so the client must reconnect multiple times.
@@ -136,7 +136,7 @@ async fn goaway_drops_in_flight_requests() {
         .connect()
         .await
         .unwrap();
-    let client = TestClient::new(channel);
+    let client = GoawayTestClient::new(channel);
 
     // Warm up: establish the connection with one successful request.
     let mut c = client.clone();
@@ -189,7 +189,7 @@ async fn goaway_subsequent_requests_succeed() {
         .connect()
         .await
         .unwrap();
-    let client = TestClient::new(channel);
+    let client = GoawayTestClient::new(channel);
 
     // First batch: some will fail due to GOAWAY
     let futs: Vec<_> = (0..20)
@@ -238,7 +238,7 @@ async fn goaway_retries_client_streaming() {
         .connect()
         .await
         .unwrap();
-    let client = TestClient::new(channel);
+    let client = GoawayTestClient::new(channel);
 
     // Warm up: establish the connection with one successful request.
     let mut c = client.clone();
